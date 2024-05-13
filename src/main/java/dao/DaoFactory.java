@@ -1,5 +1,6 @@
 package dao;
 
+import entity.UserCredentials;
 import exception.ServerException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -19,6 +20,10 @@ public abstract class DaoFactory {
 
     public abstract DaoConnection getConnection();
 
+    // class level dao
+    public abstract UserCredentialsDao createUserCredentialsDao();
+    // business level dao
+    public abstract UserCredentialsDao createUserCredentialsDao(DaoConnection connection);
 
     public static DaoFactory getDaoFactory() {
         if (daoFactory == null) {
