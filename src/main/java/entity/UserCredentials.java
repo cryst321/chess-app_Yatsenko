@@ -15,6 +15,16 @@ public class UserCredentials {
     private String password;/*Varchar(255)*/
     private String role;/*Varchar(10)*/
 
+    public UserCredentials(String nickname, String email, String password) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+    }
+
+    public UserCredentials() {
+    }
+
+
     @Override
     public String toString() {
         return "UserCredentials{" +

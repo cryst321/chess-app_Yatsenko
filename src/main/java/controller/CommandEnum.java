@@ -1,9 +1,10 @@
 package controller;
 
 import controller.command.Command;
+import controller.command.HomeCommand;
 import controller.command.PageNotFoundCommand;
+import controller.command.auth.*;
 import controller.command.user_credentials.AllUserCredentialsCommand;
-import entity.UserCredentials;
 import service.UserCredentialsService;
 
 enum CommandEnum {
@@ -14,7 +15,7 @@ enum CommandEnum {
             this.command = new PageNotFoundCommand();
         }
     },
-    /**
+
     HOME {
         {
             this.key = "GET:";
@@ -37,15 +38,41 @@ enum CommandEnum {
     POST_LOGIN {
         {
             this.key = "POST:login";
-            this.command = new PostLoginCommand(UserService.getInstance());
+            this.command = new PostLoginCommand(UserCredentialsService.getInstance());
         }
-    },**/
+    },
+    GET_SIGNUP {
+        {
+            this.key = "GET:signup";
+            this.command = new GetSignupCommand();
+        }
+    },
+    POST_SIGNUP {
+        {
+            this.key = "POST:signup";
+            this.command = new PostSignupCommand(UserCredentialsService.getInstance());
+        }
+    },
     ALL_USER_CREDENTIALS {
         {
             this.key = "GET:credentials";
             this.command = new AllUserCredentialsCommand(UserCredentialsService.getInstance());
         }
-    };
+    },
+    GET_CREATEGAME {
+        {
+            this.key = "GET:creategame";
+            this.command = new GetCreategameCommand();
+        }
+    },
+    GET_PROFILE {
+            {
+                this.key = "GET:profile";
+                this.command = new GetProfileCommand();
+            }
+
+    }
+    ;
 
     String key;
     Command command;

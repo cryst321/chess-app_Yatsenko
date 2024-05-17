@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * Application HTTP Front Servlet that processes all the incoming requests
  */
 
-@WebServlet(urlPatterns = { "/controller/*" }, loadOnStartup = 1)
+@WebServlet(urlPatterns = { "/chess/*" }, loadOnStartup = 1)
 public class FrontController extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(FrontController.class);

@@ -27,7 +27,7 @@
 
 		</div>
 		<div class="row-fluid ">
-			<a href="${pageContext.request.contextPath}/controller/">Back to
+			<a href="${pageContext.request.contextPath}/chess/">Back to
 				home page</a>
 		</div>
 

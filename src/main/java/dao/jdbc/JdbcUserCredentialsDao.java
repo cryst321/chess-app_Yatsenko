@@ -17,7 +17,13 @@ public class JdbcUserCredentialsDao implements UserCredentialsDao {
 
     private static String GET_ALL = "SELECT * FROM user_credentials ORDER BY id";
     private static String GET_BY_ID = "SELECT * FROM user_credentials WHERE id=?";
+    private static String GET_FULL_CREDENTIALS = "SELECT * FROM user_credentials WHERE email=? AND password=?";
 
+    private static String UPDATE_RATING_BULLET = "UPDATE user_details SET rating_bullet=rating_bullet+? WHERE user_id=?";
+
+
+    private static final String INSERT_USER_CREDENTIALS = "INSERT INTO user_credentials (nickname, email, password, role) VALUES (?, ?, ?, 'user')";
+    private static final String INSERT_USER_DETAILS = "INSERT INTO user_details (user_id) VALUES (?)";
 
     // table columns names
     private static String ID = "id";
@@ -77,7 +83,47 @@ public class JdbcUserCredentialsDao implements UserCredentialsDao {
     }
 
     @Override
-    public void create(UserCredentials e) {
+    public void create(UserCredentials user) {
+        JdbcDaoConnection daoConnection = new JdbcDaoConnection(connection);
+        Connection conn = daoConnection.getConnection();
+
+        try {
+            /** Виконуємо операції як одну транзакцію, щоб забезпечити атомарність**/
+            daoConnection.begin();
+
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+
+            /** Створюємо рядок в таблиці user_credentials**/
+            try (PreparedStatement insertUserCredentialsStmt = conn.prepareStatement(INSERT_USER_CREDENTIALS, Statement.RETURN_GENERATED_KEYS)) {
+                insertUserCredentialsStmt.setString(1, user.getNickname());
+                insertUserCredentialsStmt.setString(2, user.getEmail());
+                insertUserCredentialsStmt.setString(3, user.getPassword());
+
+                insertUserCredentialsStmt.executeUpdate();
+
+                try (ResultSet generatedKeys = insertUserCredentialsStmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int userId = generatedKeys.getInt(1);
+
+                        /** Створюємо рядок в таблиці user_details**/
+                        try (PreparedStatement insertUserDetailsStmt = conn.prepareStatement(INSERT_USER_DETAILS)) {
+                            insertUserDetailsStmt.setInt(1, userId);
+                            insertUserDetailsStmt.executeUpdate();
+                        }
+                    } else {
+                        throw new SQLException("Creating user failed, no ID obtained.");
+                    }
+                }
+            }
+
+            daoConnection.commit();
+        } catch (SQLException e) {
+            daoConnection.rollback();
+            LOGGER.error("JdbcUserCredentialsDao create SQL exception", e);
+            throw new ServerException(e);
+        } finally {
+            if(connectionShouldBeClosed)daoConnection.close();
+        }
 
     }
 
@@ -91,6 +137,35 @@ public class JdbcUserCredentialsDao implements UserCredentialsDao {
 
     }
 
+    @Override
+    public void updateBulletRating(int userId, int ratingChange) {
+        JdbcDaoConnection daoConnection = new JdbcDaoConnection(connection);
+        Connection conn = daoConnection.getConnection();
+
+        try {
+            daoConnection.begin();
+            /**Встановлення рівню ізольованості Serializable для операції з рейтингом**/
+            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+
+            try (PreparedStatement updateStatement = conn.prepareStatement(UPDATE_RATING_BULLET)) {
+                updateStatement.setInt(1, ratingChange);
+                updateStatement.setInt(2, userId);
+                updateStatement.executeUpdate();
+            }
+
+            daoConnection.commit();
+        } catch (SQLException e) {
+            daoConnection.rollback();
+            LOGGER.error("Error while updating bullet rating for user ID: " + userId, e);
+            throw new ServerException(e);
+        } finally {
+            if (connectionShouldBeClosed) {
+                daoConnection.close();
+            }
+        }
+    }
+
+
     protected static UserCredentials extractUserCredentialsFromResultSet(ResultSet resultSet) throws SQLException {
 
         return new UserCredentials.Builder()
@@ -99,6 +174,24 @@ public class JdbcUserCredentialsDao implements UserCredentialsDao {
                 .setEmail(resultSet.getString(EMAIL))
                 .setRole(resultSet.getString(ROLE)).setPassword(resultSet.getString(PASSWORD)).build();
     }
+
+    @Override
+    public Optional<UserCredentials> getFullCredentials(String email, String password) {
+        Optional<UserCredentials> user = Optional.empty();
+        try (PreparedStatement query = connection.prepareStatement(GET_FULL_CREDENTIALS)) {
+            query.setString(1, email);
+            query.setString(2, password);
+            ResultSet resultSet = query.executeQuery();
+            while (resultSet.next()) {
+                user = Optional.of(extractUserCredentialsFromResultSet(resultSet));
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("JdbcUserDao getFullCredentials SQL exception: " + email, e);
+            throw new ServerException(e);
+        }
+        return user;    }
+
     @Override
     public void close() {
 

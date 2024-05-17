@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: Maryna
-  Date: 13.05.2024
-  Time: 22:59
+  Date: 16.05.2024
+  Time: 18:10
   To change this template use File | Settings | File Templates.
 --%>
 <%@include file="header.jsp"%>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Credentials</title>
+  <title>Players</title>
   <!-- Bootstrap CSS -->
   <style>
     table {
@@ -23,30 +23,40 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       transition: box-shadow 0.3s ease-out;
     }
+    .profile-pic {
+      max-width: 50px;
+      max-height: 50px;
+    }
   </style>
 </head>
 
 <body>
 <div class="container mt-5">
-  <h1 class="mb-4">All User Credentials</h1>
+  <h1 class="mb-4">All Players</h1>
   <table class="table table-bordered table-striped">
     <thead class="thead-dark">
     <tr>
-      <th>ID</th>
+      <th>Profile Picture</th>
       <th>Nickname</th>
-      <th>Email</th>
-      <th>Password</th>
-      <th>Role</th>
+      <th>Rating (Bullet)</th>
+      <th>Rating (Blitz)</th>
+      <th>Rating (Rapid)</th>
+      <th>Rating (Classic)</th>
+      <th>Country</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="credentials" items="${credentials}">
+    <c:forEach var="player" items="${players}">
       <tr>
-        <td>${credentials.id}</td>
-        <td>${credentials.nickname}</td>
-        <td>${credentials.email}</td>
-        <td>${credentials.password}</td>
-        <td>${credentials.role}</td>
+        <td>
+          <img class="profile-pic" src="${player.profilePicture != null ? player.profilePicture : 'https://i.ibb.co/R9hVKtm/blank.jpg'}" alt="Profile Picture">
+        </td>
+        <td>${player.nickname}</td>
+        <td>${player.ratingBullet}</td>
+        <td>${player.ratingBlitz}</td>
+        <td>${player.ratingRapid}</td>
+        <td>${player.ratingClassic}</td>
+        <td>${player.country != null ? player.country : '-'}</td>
       </tr>
     </c:forEach>
     </tbody>

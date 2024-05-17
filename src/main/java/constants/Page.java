@@ -11,7 +11,13 @@ public final class Page {
 
 	public static final String HOME_VIEW = "/index" + SUFFIX;	
 	public static final String LOGIN_VIEW = PREFIX + "login" + SUFFIX;
-	
+	public static final String SIGNUP_VIEW = PREFIX + "signup" + SUFFIX;
+	public static final String CREATEGAME_VIEW = PREFIX + "creategame" + SUFFIX;
+	public static final String PROFILE_VIEW = PREFIX + "profile" + SUFFIX;
+
+
+
+
 	public static final String ALL_USERS_VIEW = PREFIX + "allUsers" + SUFFIX;
 	public static final String ADD_UPDATE_USER_VIEW = PREFIX + "addUpdateUser" + SUFFIX;
 

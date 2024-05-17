@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class CommandKeyGenerator {
 
-	private static String CONTROLLER_PATH = ".*/controller/";
+	private static String CONTROLLER_PATH = ".*/chess/";
 	private static String REPLACEMENT = "";
 	private static String DELIMITER = ":";
 
