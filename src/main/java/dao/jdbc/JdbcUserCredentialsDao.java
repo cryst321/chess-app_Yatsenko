@@ -19,13 +19,14 @@ public class JdbcUserCredentialsDao implements UserCredentialsDao {
     private static String GET_BY_ID = "SELECT * FROM user_credentials WHERE id=?";
     private static String GET_FULL_CREDENTIALS = "SELECT * FROM user_credentials WHERE email=? AND password=?";
 
-    private static String UPDATE_RATING_BULLET = "UPDATE user_details SET rating_bullet=rating_bullet+? WHERE user_id=?";
+    private static final String UPDATE_USER_CREDENTIALS = "UPDATE user_credentials SET nickname=?, email=?, password=?, role=? WHERE id=?";
+    private static final String DELETE_USER_CREDENTIALS = "DELETE FROM user_credentials WHERE id=?";
+
 
 
     private static final String INSERT_USER_CREDENTIALS = "INSERT INTO user_credentials (nickname, email, password, role) VALUES (?, ?, ?, 'user')";
     private static final String INSERT_USER_DETAILS = "INSERT INTO user_details (user_id) VALUES (?)";
 
-    // table columns names
     private static String ID = "id";
     private static String NICKNAME = "nickname";
     private static String EMAIL = "email";
@@ -128,42 +129,31 @@ public class JdbcUserCredentialsDao implements UserCredentialsDao {
     }
 
     @Override
-    public void update(UserCredentials e) {
-
+    public void update(UserCredentials user) {
+        try (PreparedStatement updateStmt = connection.prepareStatement(UPDATE_USER_CREDENTIALS)) {
+            updateStmt.setString(1, user.getNickname());
+            updateStmt.setString(2, user.getEmail());
+            updateStmt.setString(3, user.getPassword());
+            updateStmt.setString(4, user.getRole());
+            updateStmt.setInt(5, user.getId());
+            updateStmt.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("JdbcUserCredentialsDao update SQL exception: " + user.getId(), e);
+            throw new ServerException(e);
+        }
     }
 
     @Override
     public void delete(Integer id) {
-
-    }
-
-    @Override
-    public void updateBulletRating(int userId, int ratingChange) {
-        JdbcDaoConnection daoConnection = new JdbcDaoConnection(connection);
-        Connection conn = daoConnection.getConnection();
-
-        try {
-            daoConnection.begin();
-            /**Встановлення рівню ізольованості Serializable для операції з рейтингом**/
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-
-            try (PreparedStatement updateStatement = conn.prepareStatement(UPDATE_RATING_BULLET)) {
-                updateStatement.setInt(1, ratingChange);
-                updateStatement.setInt(2, userId);
-                updateStatement.executeUpdate();
-            }
-
-            daoConnection.commit();
+        try (PreparedStatement deleteStmt = connection.prepareStatement(DELETE_USER_CREDENTIALS)) {
+            deleteStmt.setInt(1, id);
+            deleteStmt.executeUpdate();
         } catch (SQLException e) {
-            daoConnection.rollback();
-            LOGGER.error("Error while updating bullet rating for user ID: " + userId, e);
+            LOGGER.error("JdbcUserCredentialsDao delete SQL exception: " + id, e);
             throw new ServerException(e);
-        } finally {
-            if (connectionShouldBeClosed) {
-                daoConnection.close();
-            }
         }
     }
+
 
 
     protected static UserCredentials extractUserCredentialsFromResultSet(ResultSet resultSet) throws SQLException {

@@ -8,8 +8,6 @@ public interface UserCredentialsDao extends GenericDao<UserCredentials, Integer>
 
     Optional<UserCredentials> getFullCredentials(String email, String password);
 
-    void updateBulletRating(int id, int rating);
-
     void close();
 
 

@@ -4,21 +4,25 @@ import java.util.Objects;
 
 public class User {
 
+
+
+    private Integer id;
     private UserCredentials userCredentials;
     private UserDetails userDetails;
 
     public User() {
     }
 
-    public User(UserCredentials userCredentials, UserDetails userDetails) {
+    public User(Integer id, UserCredentials userCredentials, UserDetails userDetails) {
+        this.id = id;
         this.userCredentials = userCredentials;
         this.userDetails = userDetails;
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "userCredentials=" + userCredentials +
+        return "User{" + id +
+                ", userCredentials=" + userCredentials +
                 ", userDetails=" + userDetails +
                 '}';
     }
@@ -26,6 +30,11 @@ public class User {
     public static class Builder implements IBuilder<User> {
 
         private User user = new User();
+
+        public Builder setUserId(Integer id) {
+            user.id = id;
+            return this;
+        }
 
         public Builder setUserCredentials(UserCredentials userCredentials) {
             user.userCredentials = userCredentials;
@@ -57,6 +66,14 @@ public class User {
 
     public void setUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
