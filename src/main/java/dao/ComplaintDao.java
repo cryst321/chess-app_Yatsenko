@@ -7,7 +7,7 @@ import entity.User;
 public interface ComplaintDao extends GenericDao<Complaint, Integer>, AutoCloseable{
     void close();
 
-    void updateStatus(String status);
+    void updateStatus(Integer complaint_id,String status);
 
     void updateModerator(Integer moderator_id, Integer complaint_id);
 

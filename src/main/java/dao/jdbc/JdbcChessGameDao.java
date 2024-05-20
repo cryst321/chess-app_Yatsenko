@@ -2,6 +2,7 @@ package dao.jdbc;
 
 import dao.ChessGameDao;
 import entity.ChessGame;
+import entity.GameRequest;
 import entity.User;
 import exception.ServerException;
 import org.apache.log4j.LogManager;
@@ -129,13 +130,19 @@ public class JdbcChessGameDao implements ChessGameDao {
         chessGame.setGameId(resultSet.getInt("game_id"));
         chessGame.setTimeBeginning(resultSet.getTimestamp("time_beginning"));
         chessGame.setTimeEnd(resultSet.getTimestamp("time_end"));
-        chessGame.setGameType(resultSet.getString("game_type"));
+        chessGame.setGameType(GameRequest.GameType.fromValue(resultSet.getString("game_type")));
         chessGame.setGameStatus(resultSet.getString("game_status"));
         JdbcUserDao userDao = new JdbcUserDao(connection);
         chessGame.setBlackPlayer(userDao.getById(resultSet.getInt("black_user_id")).orElse(null));
         chessGame.setWhitePlayer(userDao.getById(resultSet.getInt("white_user_id")).orElse(null));
         chessGame.setWinner(userDao.getById(resultSet.getInt("winner_id")).orElse(null));
-        chessGame.setMoves((String[]) resultSet.getArray("moves").getArray());
+
+        Array movesArray = resultSet.getArray("moves");
+        if (movesArray != null) {
+            chessGame.setMoves((String[]) movesArray.getArray());
+        } else {
+            chessGame.setMoves(new String[100]);
+        }
         chessGame.setRating(resultSet.getBoolean("is_rating"));
         chessGame.setRatingWhite(resultSet.getInt("rating_white"));
         chessGame.setRatingBlack(resultSet.getInt("rating_black"));
@@ -146,11 +153,15 @@ public class JdbcChessGameDao implements ChessGameDao {
     private void prepareStatementForChessGame(PreparedStatement query, ChessGame chessGame) throws SQLException {
         query.setTimestamp(1, chessGame.getTimeBeginning());
         query.setTimestamp(2, chessGame.getTimeEnd());
-        query.setString(3, chessGame.getGameType());
+        query.setObject(3, chessGame.getGameType().getValue(), Types.OTHER);
         query.setString(4, chessGame.getGameStatus());
         query.setInt(5, chessGame.getBlackPlayer().getId());
         query.setInt(6, chessGame.getWhitePlayer().getId());
-        query.setInt(7, chessGame.getWinner() != null ? chessGame.getWinner().getId() : null);
+        if (chessGame.getWinner() != null) {
+            query.setInt(7, chessGame.getWinner().getId());
+        } else {
+            query.setNull(7, Types.INTEGER);
+        }
         query.setArray(8, connection.createArrayOf("VARCHAR", chessGame.getMoves()));
         query.setBoolean(9, chessGame.isRating());
         query.setInt(10, chessGame.getRatingWhite());

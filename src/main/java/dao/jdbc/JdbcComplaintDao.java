@@ -21,6 +21,8 @@ public class JdbcComplaintDao implements ComplaintDao {
     private static final String INSERT_COMPLAINT = "INSERT INTO complaint (created_at, complainant_id, reported_id, complaint_type, reason, chat_message_id, moderator_id, status) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String GET_ALL = "SELECT * FROM complaint ORDER BY id";
+    private static final String GET_ALL_RESOLVED = "SELECT * FROM complaint WHERE status=ORDER BY created_at LIMIT 5";
+
     private static final String GET_BY_ID = "SELECT * FROM complaint WHERE id=?";
 
     private static final String DELETE_COMPLAINT = "DELETE FROM complaint WHERE id=?";
@@ -124,6 +126,7 @@ public class JdbcComplaintDao implements ComplaintDao {
         Timestamp createdAt = resultSet.getTimestamp("created_at");
         String complaintType = resultSet.getString("complaint_type");
         String reason = resultSet.getString("reason");
+        String status = resultSet.getString("status");
 
         Complaint complaint = new Complaint();
 
@@ -140,14 +143,17 @@ public class JdbcComplaintDao implements ComplaintDao {
         complaint.setChatMessage(chatMessageDao.getById(resultSet.getInt("chat_message_id")).orElse(null));
 
         complaint.setModerator(userDao.getById(resultSet.getInt("moderator_id")).orElse(null));
+        complaint.setStatus(status);
 
         return complaint;
     }
 
     @Override
-    public void updateStatus(String status) {
+    public void updateStatus(Integer complaint_id, String status) {
         try (PreparedStatement statement = connection.prepareStatement(CHANGE_STATUS)) {
             statement.setString(1, status);
+            statement.setInt(2, complaint_id);
+
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Setting status complaint failed, no rows affected.");
@@ -160,7 +166,11 @@ public class JdbcComplaintDao implements ComplaintDao {
     @Override
     public void updateModerator(Integer moderator_id, Integer complaint_id) {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_MODERATOR)) {
-            statement.setInt(1, moderator_id);
+            if (moderator_id != null) {
+                statement.setInt(1, moderator_id);
+            } else {
+                statement.setNull(1, Types.INTEGER);
+            }
             statement.setInt(2, complaint_id);
 
             int affectedRows = statement.executeUpdate();

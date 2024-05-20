@@ -92,7 +92,7 @@ public class FrontController extends HttpServlet {
      */
     private void forwardToCommandResultedPage(HttpWrapper httpWrapper, String resultedRedirectResource)
             throws ServletException, IOException {
-        if (!resultedRedirectResource.contains(RedirectionManager.REDIRECTION)) {
+        if (resultedRedirectResource != null  && !resultedRedirectResource.contains(RedirectionManager.REDIRECTION)) {
             httpWrapper.getRequest().getRequestDispatcher(resultedRedirectResource).forward(httpWrapper.getRequest(),
                     httpWrapper.getResponse());
         }

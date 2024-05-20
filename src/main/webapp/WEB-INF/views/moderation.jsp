@@ -51,7 +51,40 @@
         </c:forEach>
         </tbody>
     </table>
+
+
+    <c:if test="${sessionScope.userCredentials.role == 'admin'}">
+        <hr>
+        <h1 class="mb-4">Recently Resolved</h1>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Moderator</th>
+                <th>Reported</th>
+                <th>Type</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="complaint" items="${complaints}">
+                <c:if test="${complaint.status == 'resolved'}">
+                    <tr>
+                        <td>${complaint.moderator.userCredentials.nickname}</td>
+                        <td>${complaint.reported.userCredentials.nickname}</td>
+                        <td>${complaint.complaintType}</td>
+                        <td><fmt:formatDate value="${complaint.createdAt}" pattern="yyyy-MM-dd"/></td>
+                    </tr>
+                </c:if>
+            </c:forEach>
+            </tbody>
+        </table>
+    </c:if>
+
+
 </div>
+
+
+
 
 <%@include file="footer.jsp"%>
 

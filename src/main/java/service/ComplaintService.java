@@ -85,4 +85,15 @@ public class ComplaintService {
             throw new ServiceException("Error updating complaint", e);
         }
     }
+
+
+    public void setStatus(Integer complaintId, String status) {
+        LOGGER.info("Updating complaint: " + complaintId + " + setting status " + status);
+        try (ComplaintDao complaintDao = daoFactory.createComplaintDao()) {
+            complaintDao.updateStatus(complaintId,status);
+        } catch (Exception e) {
+            LOGGER.error("Error updating complaint", e);
+            throw new ServiceException("Error updating complaint", e);
+        }
+    }
 }

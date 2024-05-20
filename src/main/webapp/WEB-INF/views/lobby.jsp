@@ -52,13 +52,13 @@
         <td>
           <c:choose>
             <c:when test="${gameRequest.user.userCredentials.id == sessionScope.userCredentials.id}">
-              <form action="/chess/cancelGameRequest" method="post">
+              <form action="/chess/deleteGameRequest?gameRequestId=${gameRequest.requestId}" method="post">
                 <input type="hidden" name="requestId" value="${gameRequest.requestId}">
                 <button type="submit" class="btn btn-danger">Cancel</button>
               </form>
             </c:when>
             <c:otherwise>
-              <form action="/chess/acceptGameRequest" method="post">
+              <form action="/chess/acceptGameRequest?gameRequestId=${gameRequest.requestId}" method="post">
                 <input type="hidden" name="requestId" value="${gameRequest.requestId}">
                 <button type="submit" class="btn btn-success">Accept</button>
               </form>
@@ -70,5 +70,30 @@
     </tbody>
   </table>
 </div>
+
+
+<script>
+  function pollGameStatus() {
+    setInterval(function() {
+      fetch("${pageContext.request.contextPath}/chess/checkGameStatus")
+              .then(response => {
+                if (response.redirected) {
+                  window.location.href = response.url;
+                } else {
+                  return response.text();
+                }
+              })
+              .then(gameId => {
+                if (gameId && !response.redirected) {
+                  window.location.href = "${pageContext.request.contextPath}/chess/game?gameId=" + gameId;
+                }
+              });
+    }, 5000);
+  }
+
+  pollGameStatus();
+</script>
+
+
 
 <%@include file="footer.jsp"%>

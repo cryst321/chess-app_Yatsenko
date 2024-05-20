@@ -1,6 +1,5 @@
 package controller.command.complaint;
 
-
 import constants.Attribute;
 import constants.Page;
 import controller.command.Command;
@@ -13,11 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class BookComplaintCommand implements Command {
-
+public class UnbookComplaintCommand implements Command {
     private final ComplaintService complaintService;
 
-    public BookComplaintCommand(ComplaintService complaintService) {
+    public UnbookComplaintCommand(ComplaintService complaintService) {
         this.complaintService = complaintService;
     }
 
@@ -27,10 +25,9 @@ public class BookComplaintCommand implements Command {
         HttpSession session = request.getSession();
         UserCredentials currentUserCredentials = (UserCredentials) session.getAttribute("userCredentials");
 
-        Integer moderatorId = currentUserCredentials.getId();
         Integer complaintId = Integer.parseInt(request.getParameter("complaintId"));
 
-        complaintService.setModerator(moderatorId,complaintId);
+        complaintService.setModerator(null, complaintId);
 
         request.setAttribute(Attribute.COMPLAINTS,complaintService.getAllComplaints());
         return Page.ALL_REPORTS_VIEW;

@@ -4,22 +4,14 @@ import controller.command.Command;
 import controller.command.HomeCommand;
 import controller.command.PageNotFoundCommand;
 import controller.command.auth.*;
-import controller.command.complaint.AllReportsCommand;
-import controller.command.complaint.BookComplaintCommand;
-import controller.command.complaint.GetReportCommand;
-import controller.command.complaint.PostReportCommand;
-import controller.command.game.GetCreateGameCommand;
-import controller.command.game.GetLobbyCommand;
-import controller.command.game.PostCreateGameCommand;
+import controller.command.complaint.*;
+import controller.command.game.*;
 import controller.command.user.AllPlayersCommand;
 import controller.command.user.GetProfileCommand;
 import controller.command.user.GetUpdateUserCommand;
 import controller.command.user.PostUpdateUserCommand;
 import controller.command.user_credentials.AllUserCredentialsCommand;
-import service.ComplaintService;
-import service.GameRequestService;
-import service.UserCredentialsService;
-import service.UserService;
+import service.*;
 
 import java.awt.print.Book;
 
@@ -122,6 +114,34 @@ enum CommandEnum {
 
         }
     },
+    CHECK_GAME_STATUS {
+        {
+            this.key = "GET:checkGameStatus";
+            this.command = new CheckGameStatusCommand();
+
+        }
+    }
+    ,
+    GET_CHESS_GAME {
+        {
+            this.key = "GET:game";
+            this.command = new GetChessGameCommand(ChessGameService.getInstance());
+        }
+    },
+    ACCEPT_GAME_REQUEST {
+        {
+            this.key = "POST:acceptGameRequest";
+            this.command = new AcceptGameRequestCommand(GameRequestService.getInstance(), ChessGameService.getInstance(), UserService.getInstance());
+        }
+    },
+
+    DELETE_GAME_REQUEST {
+        {
+            this.key = "POST:deleteGameRequest";
+            this.command = new DeleteGameRequestCommand(GameRequestService.getInstance());
+        }
+    },
+
 
     MODERATION {
         {
@@ -150,10 +170,23 @@ enum CommandEnum {
             this.command = new BookComplaintCommand(ComplaintService.getInstance());
 
         }
+    },
+    UNBOOK_COMPLAINT {
+        {
+            this.key = "GET:unbookComplaint";
+            this.command = new UnbookComplaintCommand(ComplaintService.getInstance());
+
+        }
+    },
+    MARK_RESOLVED {
+        {
+            this.key = "GET:markResolved";
+            this.command = new MarkResolvedCommand(ComplaintService.getInstance());
+
+        }
     }
     ;
 
-    ;
 
     String key;
     Command command;

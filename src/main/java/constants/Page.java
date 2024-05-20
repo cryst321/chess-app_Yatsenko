@@ -28,6 +28,7 @@ public final class Page {
 
 	/**Game requests, lobby, games*/
 	public static final String LOBBY_VIEW = PREFIX + "lobby" + SUFFIX;
+	public static final String BOARD_VIEW = PREFIX + "board" + SUFFIX;
 
 
 	public static final String ALL_CREDENTIALS_VIEW = PREFIX + "credentials" + SUFFIX;

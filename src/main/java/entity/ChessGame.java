@@ -12,7 +12,7 @@ public class ChessGame {
     private Integer game_id;
     private Timestamp timeBeginning;
     private Timestamp timeEnd;
-    private String gameType; /* varchar(255) */
+    private GameRequest.GameType gameType; /* varchar(255) */
     private String gameStatus; /* varchar(255) */
     private User blackPlayer;
     private User whitePlayer;
@@ -26,7 +26,7 @@ public class ChessGame {
     public ChessGame() {
     }
 
-    public ChessGame(Integer game_id, Timestamp timeBeginning, Timestamp timeEnd, String gameType, String gameStatus, User blackPlayer, User whitePlayer, User winner, String[] moves, boolean isRating, Integer ratingWhite, Integer ratingBlack, Integer timeRestriction) {
+    public ChessGame(Integer game_id, Timestamp timeBeginning, Timestamp timeEnd, GameRequest.GameType gameType, String gameStatus, User blackPlayer, User whitePlayer, User winner, String[] moves, boolean isRating, Integer ratingWhite, Integer ratingBlack, Integer timeRestriction) {
         this.game_id = game_id;
         this.timeBeginning = timeBeginning;
         this.timeEnd = timeEnd;
@@ -80,7 +80,7 @@ public class ChessGame {
             return this;
         }
 
-        public Builder setGameType(String gameType) {
+        public Builder setGameType(GameRequest.GameType gameType) {
             chessGame.gameType = gameType;
             return this;
         }
@@ -160,11 +160,11 @@ public class ChessGame {
         this.timeEnd = timeEnd;
     }
 
-    public String getGameType() {
+    public GameRequest.GameType getGameType() {
         return gameType;
     }
 
-    public void setGameType(String gameType) {
+    public void setGameType(GameRequest.GameType gameType) {
         this.gameType = gameType;
     }
 
