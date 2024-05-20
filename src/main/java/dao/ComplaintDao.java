@@ -9,7 +9,7 @@ public interface ComplaintDao extends GenericDao<Complaint, Integer>, AutoClosea
 
     void updateStatus(String status);
 
-    void updateModerator(Integer moderator_id);
+    void updateModerator(Integer moderator_id, Integer complaint_id);
 
 
 }

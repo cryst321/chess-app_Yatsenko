@@ -69,7 +69,7 @@
             <li><a href="${pageContext.request.contextPath}/chess/players">COMMUNITY</a></li>
             <!-- Moderation link for admin or moderator -->
             <c:if test="${not empty userCredentials and (userCredentials.role == 'admin' or userCredentials.role == 'moderator')}">
-                <li><a href="#">MODERATION</a></li>
+                <li><a href="${pageContext.request.contextPath}/chess/moderation">MODERATION</a></li>
             </c:if>
         </ul>
 

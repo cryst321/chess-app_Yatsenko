@@ -34,5 +34,7 @@ public final class Attribute {
     public static final String PROFILE_PICTURE = "profilePicture";
     public static final String BIO = "bio";
 
+    public static final String COMPLAINTS = "complaints";
+
 
 }

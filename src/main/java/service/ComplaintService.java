@@ -2,11 +2,16 @@ package service;
 
 import dao.ComplaintDao;
 import dao.DaoFactory;
+import dao.UserCredentialsDao;
 import dao.UserDao;
 import entity.Complaint;
+import entity.UserCredentials;
 import exception.ServiceException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import java.util.List;
+import java.util.Optional;
 
 public class ComplaintService {
 
@@ -25,6 +30,21 @@ public class ComplaintService {
     public static ComplaintService getInstance() {
         return Holder.INSTANCE;
     }
+
+    public List<Complaint> getAllComplaints() {
+        LOGGER.info("Getting all reports");
+        try (ComplaintDao complaintDao = daoFactory.createComplaintDao()) {
+            return complaintDao.getAll();
+        }
+    }
+
+    public Optional<Complaint> getComplaintById(Integer id) {
+        LOGGER.info("Getting complaint " + id);
+        try (ComplaintDao complaintDao = daoFactory.createComplaintDao()) {
+            return complaintDao.getById(id);
+        }
+    }
+
 
     public void createComplaint(Complaint complaint) {
         LOGGER.info("Creating complaint: " + complaint);
@@ -53,6 +73,16 @@ public class ComplaintService {
         } catch (Exception e) {
             LOGGER.error(String.format("Error deleting complaint by id: %d", id), e);
             throw new ServiceException(String.format("Error deleting complaint by id: %d", id), e);
+        }
+    }
+
+    public void setModerator(Integer moderatorId, Integer complaintId) {
+        LOGGER.info("Updating complaint: " + complaintId + " + setting moder " + moderatorId);
+        try (ComplaintDao complaintDao = daoFactory.createComplaintDao()) {
+            complaintDao.updateModerator(moderatorId, complaintId);
+        } catch (Exception e) {
+            LOGGER.error("Error updating complaint", e);
+            throw new ServiceException("Error updating complaint", e);
         }
     }
 }

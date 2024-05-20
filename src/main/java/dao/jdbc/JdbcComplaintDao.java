@@ -158,12 +158,14 @@ public class JdbcComplaintDao implements ComplaintDao {
     }
 
     @Override
-    public void updateModerator(Integer moderator_id) {
+    public void updateModerator(Integer moderator_id, Integer complaint_id) {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_MODERATOR)) {
             statement.setInt(1, moderator_id);
+            statement.setInt(2, complaint_id);
+
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
-                throw new SQLException("Setting moderator complaint failed, no rows affected.");
+                throw new SQLException("Setting moderator for complaint failed, no rows affected.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

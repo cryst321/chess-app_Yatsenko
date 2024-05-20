@@ -4,6 +4,8 @@ import controller.command.Command;
 import controller.command.HomeCommand;
 import controller.command.PageNotFoundCommand;
 import controller.command.auth.*;
+import controller.command.complaint.AllReportsCommand;
+import controller.command.complaint.BookComplaintCommand;
 import controller.command.complaint.GetReportCommand;
 import controller.command.complaint.PostReportCommand;
 import controller.command.game.GetCreateGameCommand;
@@ -18,6 +20,8 @@ import service.ComplaintService;
 import service.GameRequestService;
 import service.UserCredentialsService;
 import service.UserService;
+
+import java.awt.print.Book;
 
 enum CommandEnum {
 
@@ -119,6 +123,13 @@ enum CommandEnum {
         }
     },
 
+    MODERATION {
+        {
+            this.key = "GET:moderation";
+            this.command = new AllReportsCommand(ComplaintService.getInstance());
+
+        }
+    },
     GET_REPORT {
         {
             this.key = "GET:report";
@@ -131,7 +142,16 @@ enum CommandEnum {
             this.key = "POST:report";
             this.command = new PostReportCommand(ComplaintService.getInstance(), UserService.getInstance());
         }
-    };
+    },
+
+    BOOK_COMPLAINT {
+        {
+            this.key = "GET:bookComplaint";
+            this.command = new BookComplaintCommand(ComplaintService.getInstance());
+
+        }
+    }
+    ;
 
     ;
 

@@ -23,7 +23,7 @@ public final class Page {
 
 	/**Complaint*/
 	public static final String REPORT_VIEW = PREFIX + "report" + SUFFIX;
-	public static final String ALL_REPORTS_VIEW = PREFIX + "reports" + SUFFIX;
+	public static final String ALL_REPORTS_VIEW = PREFIX + "moderation" + SUFFIX;
 
 
 	/**Game requests, lobby, games*/
