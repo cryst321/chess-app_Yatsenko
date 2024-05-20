@@ -1,4 +1,4 @@
-package controller.command.auth;
+package controller.command.game;
 
 import constants.Page;
 import controller.command.Command;
@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class GetProfileCommand implements Command {
+public class GetCreategameCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        return Page.PROFILE_VIEW;
+        return Page.CREATEGAME_VIEW;
     }
 }

@@ -6,66 +6,76 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@include file="header.jsp"%>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Players</title>
-  <!-- Bootstrap CSS -->
-  <style>
-    table {
-      border-collapse: separate;
-    }
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
-    tbody tr:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease-out;
-    }
-    .profile-pic {
-      max-width: 50px;
-      max-height: 50px;
-    }
-  </style>
-</head>
+
+<style>
+  .container {
+    margin-top: 20px;
+  }
+  .profile-pic {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  thead {
+    background-color: #f2f2f2;
+  }
+  tbody tr:hover {
+    background-color: #ececec;
+  }
+</style>
 
 <body>
-<div class="container mt-5">
-  <h1 class="mb-4">All Players</h1>
+<div class="container">
+  <h1 class="text-center">All Players</h1>
   <table class="table table-bordered table-striped">
     <thead class="thead-dark">
     <tr>
       <th>Profile Picture</th>
       <th>Nickname</th>
-      <th>Rating (Bullet)</th>
-      <th>Rating (Blitz)</th>
-      <th>Rating (Rapid)</th>
-      <th>Rating (Classic)</th>
+      <th>Rating (Bullet / Blitz / Rapid / Classic)</th>
       <th>Country</th>
+      <th>Joined at</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="player" items="${players}">
-      <tr>
+    <c:forEach var="player" items="${users}">
+      <tr onclick="redirectToProfile(${player.userCredentials.id})">
         <td>
-          <img class="profile-pic" src="${player.profilePicture != null ? player.profilePicture : 'https://i.ibb.co/R9hVKtm/blank.jpg'}" alt="Profile Picture">
+          <img class="profile-pic" src="${player.userDetails.profilePicture != null ? player.userDetails.profilePicture : 'https://i.ibb.co/R9hVKtm/blank.jpg'}" alt="Profile Picture">
         </td>
-        <td>${player.nickname}</td>
-        <td>${player.ratingBullet}</td>
-        <td>${player.ratingBlitz}</td>
-        <td>${player.ratingRapid}</td>
-        <td>${player.ratingClassic}</td>
-        <td>${player.country != null ? player.country : '-'}</td>
+        <td>${player.userCredentials.nickname}</td>
+        <td>
+            ${player.userDetails.ratingBullet} /
+            ${player.userDetails.ratingBlitz} /
+            ${player.userDetails.ratingRapid} /
+            ${player.userDetails.ratingClassic}
+        </td>
+
+        <td>${player.userDetails.country != null ? player.userDetails.country : '-'}</td>
+        <td>
+          <fmt:formatDate value="${player.userDetails.accountCreatedAt}" pattern="yyyy-MM-dd"/>
+        </td>
+
       </tr>
     </c:forEach>
     </tbody>
   </table>
 </div>
 
-<%@include file="footer.jsp"%>
+<script>
+  function redirectToProfile(userId) {
+    window.location.href = '${pageContext.request.contextPath}/chess/profile?userId=' + userId;
+  }
+</script>
 
-<!-- Bootstrap JS and dependencies -->
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+
+<%@include file="footer.jsp"%>

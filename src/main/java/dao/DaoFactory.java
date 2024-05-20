@@ -25,6 +25,13 @@ public abstract class DaoFactory {
     // business level dao
     public abstract UserCredentialsDao createUserCredentialsDao(DaoConnection connection);
 
+
+    public abstract UserDetailsDao createUserDetailsDao();
+    public abstract UserDetailsDao createUserDetailsDao(DaoConnection connection);
+
+    public abstract UserDao createUserDao();
+    public abstract UserDao createUserDao(DaoConnection connection);
+
     public static DaoFactory getDaoFactory() {
         if (daoFactory == null) {
             try {

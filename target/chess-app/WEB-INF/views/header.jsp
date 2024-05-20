@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
@@ -62,9 +64,9 @@
 
         <!-- Navigation links -->
         <ul class="nav navbar-nav">
-            <li><a href="/chess/creategame">GAME</a></li>
+            <li><a href="${pageContext.request.contextPath}/chess/creategame">GAME</a></li>
             <li><a href="#">LOBBY</a></li>
-            <li><a href="/chess/players">COMMUNITY</a></li>
+            <li><a href="${pageContext.request.contextPath}/chess/players">COMMUNITY</a></li>
             <!-- Moderation link for admin or moderator -->
             <c:if test="${not empty userCredentials and (userCredentials.role == 'admin' or userCredentials.role == 'moderator')}">
                 <li><a href="#">MODERATION</a></li>
@@ -88,7 +90,7 @@
             </c:choose>
 
             <c:if test="${not empty userCredentials}">
-            <li><a href="/chess/profile" class="profile-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
+            <li><a href="${pageContext.request.contextPath}/chess/profile" class="profile-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a></li>
             </c:if>
 
         </ul>

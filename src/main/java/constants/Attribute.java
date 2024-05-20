@@ -28,4 +28,11 @@ public final class Attribute {
     public static final String TO_DATE = "toDate";
     public static final String ID_USER = "id_user";
 
+    public static final String COUNTRY = "country";
+    public static final String GENDER = "gender";
+    public static final String DATE_OF_BIRTH = "dateOfBirth";
+    public static final String PROFILE_PICTURE = "profilePicture";
+    public static final String BIO = "bio";
+
+
 }

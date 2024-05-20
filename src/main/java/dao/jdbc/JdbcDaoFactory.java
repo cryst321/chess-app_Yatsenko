@@ -1,8 +1,6 @@
 package dao.jdbc;
 
-import dao.DaoConnection;
-import dao.DaoFactory;
-import dao.UserCredentialsDao;
+import dao.*;
 import exception.ServerException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -64,4 +62,34 @@ public class JdbcDaoFactory extends DaoFactory {
         Connection sqlConnection = jdbcConnection.getConnection();
         return new JdbcUserCredentialsDao(sqlConnection);
     }
+
+    @Override
+    public UserDetailsDao createUserDetailsDao() {
+        try {
+            return new JdbcUserDetailsDao(dataSource.getConnection(), true);
+        } catch (SQLException e) {
+            LOGGER.error("Can't get DB Connection for JdbcUserDetailsDao creation", e);
+            throw new ServerException(e);
+        }    }
+
+    @Override
+    public UserDetailsDao createUserDetailsDao(DaoConnection connection) {
+        JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
+        Connection sqlConnection = jdbcConnection.getConnection();
+        return new JdbcUserDetailsDao(sqlConnection);    }
+
+    @Override
+    public UserDao createUserDao() {
+        try {
+            return new JdbcUserDao(dataSource.getConnection(), true);
+        } catch (SQLException e) {
+            LOGGER.error("Can't get DB Connection for JdbcUserDao creation", e);
+            throw new ServerException(e);
+        }    }
+
+    @Override
+    public UserDao createUserDao(DaoConnection connection) {
+        JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
+        Connection sqlConnection = jdbcConnection.getConnection();
+        return new JdbcUserDao(sqlConnection);    }
 }

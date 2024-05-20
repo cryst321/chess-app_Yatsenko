@@ -18,8 +18,8 @@ public final class Page {
 
 
 
-	public static final String ALL_USERS_VIEW = PREFIX + "allUsers" + SUFFIX;
-	public static final String ADD_UPDATE_USER_VIEW = PREFIX + "addUpdateUser" + SUFFIX;
+	public static final String ALL_USERS_VIEW = PREFIX + "players" + SUFFIX;
+	public static final String UPDATE_PROFILE = PREFIX + "updateProfile" + SUFFIX;
 
 	public static final String ALL_CREDENTIALS_VIEW = PREFIX + "credentials" + SUFFIX;
 

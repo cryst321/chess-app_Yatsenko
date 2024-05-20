@@ -4,8 +4,14 @@ import controller.command.Command;
 import controller.command.HomeCommand;
 import controller.command.PageNotFoundCommand;
 import controller.command.auth.*;
+import controller.command.game.GetCreategameCommand;
+import controller.command.user.AllPlayersCommand;
+import controller.command.user.GetProfileCommand;
+import controller.command.user.GetUpdateUserCommand;
+import controller.command.user.PostUpdateUserCommand;
 import controller.command.user_credentials.AllUserCredentialsCommand;
 import service.UserCredentialsService;
+import service.UserService;
 
 enum CommandEnum {
 
@@ -68,8 +74,29 @@ enum CommandEnum {
     GET_PROFILE {
             {
                 this.key = "GET:profile";
-                this.command = new GetProfileCommand();
+                this.command = new GetProfileCommand(UserService.getInstance());
             }
+
+    },
+    ALL_PLAYERS {
+        {
+            this.key = "GET:players";
+            this.command = new AllPlayersCommand(UserService.getInstance());
+        }
+
+    },
+    GET_UPDATE_PROFILE {
+        {
+            this.key = "GET:updateProfile";
+            this.command = new GetUpdateUserCommand(UserService.getInstance());
+        }
+
+    },
+    POST_UPDATE_PROFILE {
+        {
+            this.key = "POST:updateProfile";
+            this.command = new PostUpdateUserCommand(UserService.getInstance());
+        }
 
     }
     ;

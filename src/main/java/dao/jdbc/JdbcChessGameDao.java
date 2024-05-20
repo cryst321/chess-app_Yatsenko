@@ -131,7 +131,6 @@ public class JdbcChessGameDao implements ChessGameDao {
         chessGame.setTimeEnd(resultSet.getTimestamp("time_end"));
         chessGame.setGameType(resultSet.getString("game_type"));
         chessGame.setGameStatus(resultSet.getString("game_status"));
-        // Assuming JdbcUserDao is implemented with a getById method
         JdbcUserDao userDao = new JdbcUserDao(connection);
         chessGame.setBlackPlayer(userDao.getById(resultSet.getInt("black_user_id")).orElse(null));
         chessGame.setWhitePlayer(userDao.getById(resultSet.getInt("white_user_id")).orElse(null));

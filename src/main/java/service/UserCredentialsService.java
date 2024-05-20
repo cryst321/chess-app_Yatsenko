@@ -15,14 +15,14 @@ public class UserCredentialsService {
     private static final Logger LOGGER = LogManager.getLogger(UserCredentialsService.class);
 
     static final String GET_ALL_USERS = "Get all user credentials";
-    static final String GET_USER_BY_ID = "Get user credentials by id: %d";
+    static final String GET_USER_BY_ID = "Get user credentials by id: %s";
     static final String GET_USER_BY_EMAIL = "Get user credentials by email: %d";
 
     static final String GET_FULL_CREDENTIALS = "Get full user credentials: %s %s";
 
     static final String CREATE_USER = "Create user credentials and details: %s";
-    static final String UPDATE_USER = "Update user credentials: %d";
-    static final String DELETE_USER = "Delete user credentials: %d";
+    static final String UPDATE_USER = "Update user credentials: %s";
+    static final String DELETE_USER = "Delete user credentials: %s";
 
     private final DaoFactory daoFactory;
 
@@ -64,6 +64,21 @@ public class UserCredentialsService {
 
         try (UserCredentialsDao userDao = daoFactory.createUserCredentialsDao()) {
             userDao.create(userCredentials);
+        }
+    }
+
+    public void updateUser(UserCredentials userCredentials) {
+        LOGGER.info(String.format(UPDATE_USER, userCredentials.getEmail()));
+
+        try (UserCredentialsDao userDao = daoFactory.createUserCredentialsDao()) {
+            userDao.update(userCredentials);
+        }
+    }
+
+    public void deleteUser(Integer userId) {
+        LOGGER.info(String.format(DELETE_USER,userId));
+        try (UserCredentialsDao userDao = daoFactory.createUserCredentialsDao()) {
+            userDao.delete(userId);
         }
     }
 
