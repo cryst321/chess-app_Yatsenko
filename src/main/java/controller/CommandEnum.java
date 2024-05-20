@@ -6,13 +6,16 @@ import controller.command.PageNotFoundCommand;
 import controller.command.auth.*;
 import controller.command.complaint.GetReportCommand;
 import controller.command.complaint.PostReportCommand;
-import controller.command.game.GetCreategameCommand;
+import controller.command.game.GetCreateGameCommand;
+import controller.command.game.GetLobbyCommand;
+import controller.command.game.PostCreateGameCommand;
 import controller.command.user.AllPlayersCommand;
 import controller.command.user.GetProfileCommand;
 import controller.command.user.GetUpdateUserCommand;
 import controller.command.user.PostUpdateUserCommand;
 import controller.command.user_credentials.AllUserCredentialsCommand;
 import service.ComplaintService;
+import service.GameRequestService;
 import service.UserCredentialsService;
 import service.UserService;
 
@@ -68,10 +71,16 @@ enum CommandEnum {
             this.command = new AllUserCredentialsCommand(UserCredentialsService.getInstance());
         }
     },
-    GET_CREATEGAME {
+    GET_CREATE_GAME_REQUEST {
         {
-            this.key = "GET:creategame";
-            this.command = new GetCreategameCommand();
+            this.key = "GET:createGame";
+            this.command = new GetCreateGameCommand();
+        }
+    },
+    POST_CREATE_GAME {
+        {
+            this.key = "POST:createGame";
+            this.command = new PostCreateGameCommand(GameRequestService.getInstance(), UserService.getInstance());
         }
     },
     GET_PROFILE {
@@ -101,6 +110,13 @@ enum CommandEnum {
             this.command = new PostUpdateUserCommand(UserService.getInstance());
         }
 
+    },
+    GET_LOBBY {
+        {
+            this.key = "GET:lobby";
+            this.command = new GetLobbyCommand(GameRequestService.getInstance());
+
+        }
     },
 
     GET_REPORT {

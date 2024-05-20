@@ -12,7 +12,7 @@ public class GameRequest {
      */
     private Integer request_id;
     private User user;
-    private String gameType; /*varchar(255)*/
+    private GameType gameType; /* Enum for game types */
     private Integer ratingLess; /*Integer*/
     private Integer ratingMore; /*Integer*/
     private Integer timeRestriction; /*Integer*/
@@ -22,7 +22,7 @@ public class GameRequest {
     public GameRequest() {
     }
 
-    public GameRequest(Integer request_id, User user, String gameType, Integer ratingLess, Integer ratingMore, Integer timeRestriction, String preferredColor, boolean isRating) {
+    public GameRequest(Integer request_id, User user, GameType gameType, Integer ratingLess, Integer ratingMore, Integer timeRestriction, String preferredColor, boolean isRating) {
         this.request_id = request_id;
         this.user = user;
         this.gameType = gameType;
@@ -74,7 +74,7 @@ public class GameRequest {
             return this;
         }
 
-        public Builder setGameType(String gameType) {
+        public Builder setGameType(GameType gameType) {
             gameRequest.gameType = gameType;
             return this;
         }
@@ -127,11 +127,11 @@ public class GameRequest {
         this.user = user;
     }
 
-    public String getGameType() {
+    public GameType getGameType() {
         return gameType;
     }
 
-    public void setGameType(String gameType) {
+    public void setGameType(GameType gameType) {
         this.gameType = gameType;
     }
 
@@ -175,5 +175,33 @@ public class GameRequest {
         this.isRating = isRating;
     }
 
+
+    public enum GameType {
+        BULLET("bullet"),
+        BLITZ("blitz"),
+        RAPID("rapid"),
+        CLASSIC("classic");
+
+        private final String value;
+
+        GameType(String value) {
+            this.value = value;
+        }
+        public String getGameTypeValue() {
+            return this != null ? this.getValue() : null;}
+
+        public String getValue() {
+            return value;
+        }
+
+        public static GameType fromValue(String value) {
+            for (GameType type : values()) {
+                if (type.value.equalsIgnoreCase(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("Unknown game type: " + value);
+        }
+    }
 
 }

@@ -71,7 +71,7 @@ public class JdbcGameRequestDao implements GameRequestDao {
     public void create(GameRequest gameRequest) {
         try (PreparedStatement insertStatement = connection.prepareStatement(INSERT_GAME_REQUEST, Statement.RETURN_GENERATED_KEYS)) {
             insertStatement.setInt(1, gameRequest.getUser().getUserCredentials().getId());
-            insertStatement.setString(2, gameRequest.getGameType());
+            insertStatement.setObject(2, gameRequest.getGameType().getValue(), Types.OTHER);
             insertStatement.setInt(3, gameRequest.getRatingLess());
             insertStatement.setInt(4, gameRequest.getRatingMore());
             insertStatement.setInt(5, gameRequest.getTimeRestriction());
@@ -97,7 +97,7 @@ public class JdbcGameRequestDao implements GameRequestDao {
     public void update(GameRequest gameRequest) {
         try (PreparedStatement updateStatement = connection.prepareStatement(UPDATE_GAME_REQUEST)) {
             updateStatement.setInt(1, gameRequest.getUser().getUserCredentials().getId());
-            updateStatement.setString(2, gameRequest.getGameType());
+            updateStatement.setObject(2, gameRequest.getGameType().getValue(), Types.OTHER);
             updateStatement.setInt(3, gameRequest.getRatingLess());
             updateStatement.setInt(4, gameRequest.getRatingMore());
             updateStatement.setInt(5, gameRequest.getTimeRestriction());
@@ -141,7 +141,7 @@ public class JdbcGameRequestDao implements GameRequestDao {
         Optional<User> user = userDao.getById(resultSet.getInt("user_id"));
         user.ifPresent(gameRequest::setUser);
 
-        gameRequest.setGameType(resultSet.getString("game_type"));
+        gameRequest.setGameType(GameRequest.GameType.fromValue(resultSet.getString("game_type")));
         gameRequest.setRatingLess(resultSet.getInt("rating_less"));
         gameRequest.setRatingMore(resultSet.getInt("rating_more"));
         gameRequest.setTimeRestriction(resultSet.getInt("time_restriction"));

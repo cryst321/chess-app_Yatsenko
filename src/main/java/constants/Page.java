@@ -12,7 +12,7 @@ public final class Page {
 	public static final String HOME_VIEW = "/index" + SUFFIX;	
 	public static final String LOGIN_VIEW = PREFIX + "login" + SUFFIX;
 	public static final String SIGNUP_VIEW = PREFIX + "signup" + SUFFIX;
-	public static final String CREATEGAME_VIEW = PREFIX + "creategame" + SUFFIX;
+	public static final String CREATE_GAME_REQUEST_VIEW = PREFIX + "createGame" + SUFFIX;
 	public static final String PROFILE_VIEW = PREFIX + "profile" + SUFFIX;
 
 
@@ -24,6 +24,10 @@ public final class Page {
 	/**Complaint*/
 	public static final String REPORT_VIEW = PREFIX + "report" + SUFFIX;
 	public static final String ALL_REPORTS_VIEW = PREFIX + "reports" + SUFFIX;
+
+
+	/**Game requests, lobby, games*/
+	public static final String LOBBY_VIEW = PREFIX + "lobby" + SUFFIX;
 
 
 	public static final String ALL_CREDENTIALS_VIEW = PREFIX + "credentials" + SUFFIX;

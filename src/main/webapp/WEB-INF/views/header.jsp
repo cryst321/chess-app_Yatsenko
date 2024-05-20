@@ -64,8 +64,8 @@
 
         <!-- Navigation links -->
         <ul class="nav navbar-nav">
-            <li><a href="${pageContext.request.contextPath}/chess/creategame">GAME</a></li>
-            <li><a href="#">LOBBY</a></li>
+            <li><a href="${pageContext.request.contextPath}/chess/createGame">GAME</a></li>
+            <li><a href="${pageContext.request.contextPath}/chess/lobby">LOBBY</a></li>
             <li><a href="${pageContext.request.contextPath}/chess/players">COMMUNITY</a></li>
             <!-- Moderation link for admin or moderator -->
             <c:if test="${not empty userCredentials and (userCredentials.role == 'admin' or userCredentials.role == 'moderator')}">
