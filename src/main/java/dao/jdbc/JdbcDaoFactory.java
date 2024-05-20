@@ -92,4 +92,64 @@ public class JdbcDaoFactory extends DaoFactory {
         JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
         Connection sqlConnection = jdbcConnection.getConnection();
         return new JdbcUserDao(sqlConnection);    }
+
+    @Override
+    public ComplaintDao createComplaintDao() {
+        try {
+            return new JdbcComplaintDao(dataSource.getConnection(), true);
+        } catch (SQLException e) {
+            LOGGER.error("Can't get DB Connection for JdbcComplaintDao creation", e);
+            throw new ServerException(e);
+        }        }
+
+    @Override
+    public ComplaintDao createComplaintDao(DaoConnection connection) {
+        JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
+        Connection sqlConnection = jdbcConnection.getConnection();
+        return new JdbcComplaintDao(sqlConnection);      }
+
+    @Override
+    public GameRequestDao createGameRequestDao() {
+        try {
+            return new JdbcGameRequestDao(dataSource.getConnection(), true);
+        } catch (SQLException e) {
+            LOGGER.error("Can't get DB Connection for JdbcGameRequestDao creation", e);
+            throw new ServerException(e);
+        }        }
+
+    @Override
+    public GameRequestDao createGameRequestDao(DaoConnection connection) {
+        JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
+        Connection sqlConnection = jdbcConnection.getConnection();
+        return new JdbcGameRequestDao(sqlConnection);        }
+
+    @Override
+    public ChessGameDao createChessGameDao() {
+        try {
+            return new JdbcChessGameDao(dataSource.getConnection(), true);
+        } catch (SQLException e) {
+            LOGGER.error("Can't get DB Connection for JdbcChessGameDao creation", e);
+            throw new ServerException(e);
+        }        }
+
+    @Override
+    public ChessGameDao createChessGameDao(DaoConnection connection) {
+        JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
+        Connection sqlConnection = jdbcConnection.getConnection();
+        return new JdbcChessGameDao(sqlConnection);        }
+
+    @Override
+    public ChatMessageDao createChatMessageDao() {
+        try {
+            return new JdbcChatMessageDao(dataSource.getConnection(), true);
+        } catch (SQLException e) {
+            LOGGER.error("Can't get DB Connection for JdbcChatMessageDao creation", e);
+            throw new ServerException(e);
+        }        }
+
+    @Override
+    public ChatMessageDao createChatMessageDao(DaoConnection connection) {
+        JdbcDaoConnection jdbcConnection = (JdbcDaoConnection) connection;
+        Connection sqlConnection = jdbcConnection.getConnection();
+        return new JdbcChatMessageDao(sqlConnection);        }
 }

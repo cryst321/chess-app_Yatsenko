@@ -32,6 +32,21 @@ public abstract class DaoFactory {
     public abstract UserDao createUserDao();
     public abstract UserDao createUserDao(DaoConnection connection);
 
+    public abstract ComplaintDao createComplaintDao();
+    public abstract ComplaintDao createComplaintDao(DaoConnection connection);
+
+    public abstract GameRequestDao createGameRequestDao();
+    public abstract GameRequestDao createGameRequestDao(DaoConnection connection);
+
+    public abstract ChessGameDao createChessGameDao();
+    public abstract ChessGameDao createChessGameDao(DaoConnection connection);
+
+    public abstract ChatMessageDao createChatMessageDao();
+    public abstract ChatMessageDao createChatMessageDao(DaoConnection connection);
+
+
+
+
     public static DaoFactory getDaoFactory() {
         if (daoFactory == null) {
             try {

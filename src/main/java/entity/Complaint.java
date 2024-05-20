@@ -18,6 +18,10 @@ public class Complaint {
     private ChatMessage chatMessage;
     private User moderator;
     private String status = "pending";
+    
+    public enum ComplaintType {
+        CHEAT, INSULT, RATING_MANIPULATION, TROLLING, OTHER;
+    }
 
     public Complaint() {
     }

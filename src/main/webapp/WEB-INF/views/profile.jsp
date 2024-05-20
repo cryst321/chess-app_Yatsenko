@@ -113,7 +113,7 @@
                 <a href="/chess/updateProfile" class="btn-update">Update Info</a>
             </c:when>
             <c:otherwise>
-                <a href="/chess/report" class="btn-report">Report User</a>
+                <a href="/chess/report?reportedId=${user.id}" class="btn-report">Report</a>
             </c:otherwise>
         </c:choose>
     </div>

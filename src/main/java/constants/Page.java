@@ -17,9 +17,14 @@ public final class Page {
 
 
 
-
+/**User*/
 	public static final String ALL_USERS_VIEW = PREFIX + "players" + SUFFIX;
 	public static final String UPDATE_PROFILE = PREFIX + "updateProfile" + SUFFIX;
+
+	/**Complaint*/
+	public static final String REPORT_VIEW = PREFIX + "report" + SUFFIX;
+	public static final String ALL_REPORTS_VIEW = PREFIX + "reports" + SUFFIX;
+
 
 	public static final String ALL_CREDENTIALS_VIEW = PREFIX + "credentials" + SUFFIX;
 

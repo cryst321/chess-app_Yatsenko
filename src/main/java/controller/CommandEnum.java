@@ -4,12 +4,15 @@ import controller.command.Command;
 import controller.command.HomeCommand;
 import controller.command.PageNotFoundCommand;
 import controller.command.auth.*;
+import controller.command.complaint.GetReportCommand;
+import controller.command.complaint.PostReportCommand;
 import controller.command.game.GetCreategameCommand;
 import controller.command.user.AllPlayersCommand;
 import controller.command.user.GetProfileCommand;
 import controller.command.user.GetUpdateUserCommand;
 import controller.command.user.PostUpdateUserCommand;
 import controller.command.user_credentials.AllUserCredentialsCommand;
+import service.ComplaintService;
 import service.UserCredentialsService;
 import service.UserService;
 
@@ -98,7 +101,22 @@ enum CommandEnum {
             this.command = new PostUpdateUserCommand(UserService.getInstance());
         }
 
-    }
+    },
+
+    GET_REPORT {
+        {
+            this.key = "GET:report";
+            this.command = new GetReportCommand(UserService.getInstance());
+        }
+    },
+
+    REPORT_USER {
+        {
+            this.key = "POST:report";
+            this.command = new PostReportCommand(ComplaintService.getInstance(), UserService.getInstance());
+        }
+    };
+
     ;
 
     String key;
