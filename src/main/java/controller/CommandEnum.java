@@ -6,10 +6,7 @@ import controller.command.PageNotFoundCommand;
 import controller.command.auth.*;
 import controller.command.complaint.*;
 import controller.command.game.*;
-import controller.command.user.AllPlayersCommand;
-import controller.command.user.GetProfileCommand;
-import controller.command.user.GetUpdateUserCommand;
-import controller.command.user.PostUpdateUserCommand;
+import controller.command.user.*;
 import controller.command.user_credentials.AllUserCredentialsCommand;
 import service.*;
 
@@ -141,7 +138,12 @@ enum CommandEnum {
             this.command = new DeleteGameRequestCommand(GameRequestService.getInstance());
         }
     },
-
+    CHANGE_RATING {
+        {
+            this.key = "POST:changeRating";
+            this.command = new ChangeRatingCommand(UserDetailsService.getInstance());
+        }
+    },
 
     MODERATION {
         {

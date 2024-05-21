@@ -41,7 +41,7 @@
         padding: 10px;
     }
 
-    .btn-report, .btn-update {
+    .btn-report, .btn-update,.btn-change-rating {
         display: inline-block;
         margin-top: 20px;
         padding: 10px 20px;
@@ -52,7 +52,7 @@
         cursor: pointer;
         text-decoration: none;
         text-align: center;
-        width: 200px; /* Makes the button's width fixed */
+        width: 200px;
     }
 
     .btn-report {
@@ -75,6 +75,15 @@
         border-color: #0056b3;
     }
 
+    .btn-change-rating {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-change-rating:hover {
+        background-color: #218838;
+        border-color: #218838;
+    }
     .joined-date {
         margin-top: 20px;
         padding-top: 20px;
@@ -116,11 +125,54 @@
                 <a href="/chess/report?reportedId=${user.id}" class="btn-report">Report</a>
             </c:otherwise>
         </c:choose>
+        <c:if test="${sessionScope.userCredentials.role == 'admin' || sessionScope.userCredentials.role == 'moderator'}">
+            <button class="btn-change-rating" data-toggle="modal" data-target="#changeRatingModal">Change Rating</button>
+        </c:if>
+
     </div>
 
     <div class="joined-date">
         <h4><strong>Joined at:</strong> <fmt:formatDate value="${user.userDetails.accountCreatedAt}" pattern="yyyy-MM-dd"/></h4>
     </div>
 </div>
+
+
+
+<!-- Change Rating Modal -->
+<div class="modal fade" id="changeRatingModal" tabindex="-1" role="dialog" aria-labelledby="changeRatingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changeRatingModalLabel">Change Rating</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/chess/changeRating" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="userId" value="${user.userCredentials.id}">
+                    <div class="form-group">
+                        <label for="ratingType">Rating Type</label>
+                        <select class="form-control" id="ratingType" name="ratingType">
+                            <option value="1">Bullet</option>
+                            <option value="2">Blitz</option>
+                            <option value="3">Rapid</option>
+                            <option value="4">Classic</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ratingChange">Rating Change</label>
+                        <input type="number" class="form-control" id="ratingChange" name="ratingChange" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Change Rating</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <%@include file="footer.jsp"%>

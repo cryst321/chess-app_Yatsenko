@@ -47,7 +47,7 @@ public class JdbcDaoConnection implements DaoConnection {
         try {
             connection.commit();
             inTransaction = false;
-            LOGGER.info("Transaction is commited");
+            LOGGER.info("Transaction is committed");
         } catch (SQLException e) {
             LOGGER.error("JdbcDaoConnection commit error", e);
             throw new ServerException(e);
@@ -56,6 +56,7 @@ public class JdbcDaoConnection implements DaoConnection {
 
     @Override
     public void rollback() {
+
         try {
             connection.rollback();
             inTransaction = false;

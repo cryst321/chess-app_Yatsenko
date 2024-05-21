@@ -90,7 +90,6 @@ public class AcceptGameRequestCommand implements Command {
             requestorSession.setAttribute("currentGameId", chessGame.getGameId());
         }
 
-        // Redirect to the game page
         RedirectionManager.getInstance().redirect(new HttpWrapper(request, response), "/game?gameId=" + chessGame.getGameId());
         return RedirectionManager.REDIRECTION;
 

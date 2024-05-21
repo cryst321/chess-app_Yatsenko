@@ -11,21 +11,20 @@
   <h1 class="text-center">Chess Game</h1>
   <div class="row">
     <div class="col-md-8">
-      <!-- Chessboard will be rendered here -->
-      <img src="https://i.ibb.co/Kj5wCSh/chessboard.png" alt="Chessboard" style="width: 100%;">
+      <!-- Chessboard -->
+      <img src="https://i.ibb.co/Kj5wCSh/chessboard.png" alt="Chessboard" style="width: 80%; height: auto; margin: 0 auto; display: block;">
     </div>
     <div class="col-md-4">
       <!-- Chat and game info -->
       <div id="game-info">
-        <h3>Game Info</h3>
+        <h3>Info</h3>
         <p>White: ${chessGame.whitePlayer.userCredentials.nickname}</p>
         <p>Black: ${chessGame.blackPlayer.userCredentials.nickname}</p>
-        <p>Time Restriction: ${chessGame.timeRestriction}</p>
+        <p>Type: ${chessGame.gameType.getValue()}</p>
       </div>
       <div id="chat">
         <h3>Chat</h3>
         <div id="chat-messages" style="height: 300px; overflow-y: scroll;">
-          <!-- Messages will be loaded here -->
         </div>
         <form id="chat-form">
           <input type="text" id="chat-input" class="form-control" placeholder="Type a message...">
@@ -47,11 +46,9 @@
     sparePieces: true
   });
 
-  // Chat functionality
   document.getElementById('chat-form').addEventListener('submit', function(event) {
     event.preventDefault();
     var message = document.getElementById('chat-input').value;
-    // Send message to the server
     document.getElementById('chat-input').value = '';
   });
 </script>

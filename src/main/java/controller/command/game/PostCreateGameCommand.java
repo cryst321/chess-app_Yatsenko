@@ -2,7 +2,10 @@ package controller.command.game;
 
 import constants.Attribute;
 import constants.Page;
+import constants.ServletPath;
 import controller.command.Command;
+import controller.utils.HttpWrapper;
+import controller.utils.RedirectionManager;
 import entity.GameRequest;
 import entity.User;
 import entity.UserCredentials;
@@ -38,7 +41,8 @@ public class PostCreateGameCommand implements Command {
 
         gameRequestService.createGameRequest(gameRequest);
 
-        return Page.HOME_VIEW;
+        RedirectionManager.getInstance().redirect(new HttpWrapper(request, response), "/lobby");
+        return RedirectionManager.REDIRECTION;
     }
 
     private GameRequest getGameRequestInput(HttpServletRequest request, UserCredentials userCredentials) throws ServletException {
